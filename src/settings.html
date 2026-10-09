@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+<title>Water Buddy</title>
+<style>
+  :root { --bg:#f6f8fb; --card:#fff; --ink:#1b1f2a; --mute:#667085; --line:#e4e8ef; --accent:#1d7be0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171d; --card:#1d222b; --ink:#eef1f6; --mute:#99a3b3; --line:#2b323e; } }
+  * { box-sizing: border-box; }
+  html { height:100%; } body { margin:0; padding:22px 22px 10px; min-height:100%; overflow-y:auto; background:var(--bg); color:var(--ink); font:14px/1.4 "Segoe UI", system-ui, sans-serif; }
+  h1 { font-size:20px; margin:0 0 2px; } .sub { color:var(--mute); margin-bottom:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px 16px; margin-bottom:14px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 0; border-bottom:1px solid var(--line); }
+  .row:last-child { border-bottom:0; }
+  .row small { display:block; color:var(--mute); font-size:12px; }
+  input[type=number], input[type=text] { width:84px; padding:7px 9px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); font:inherit; text-align:right; }
+  input[type=text] { width:150px; text-align:left; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .chip { padding:6px 10px; border:1px solid var(--line); background:var(--bg); color:var(--ink); border-radius:999px; cursor:pointer; font:inherit; font-size:13px; }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .hours { display:flex; align-items:center; gap:6px; } .hours input { width:62px; }
+  label.sw { position:relative; width:42px; height:24px; flex:none; }
+  label.sw input { opacity:0; width:0; height:0; }
+  label.sw span { position:absolute; inset:0; background:#c5ccd8; border-radius:99px; transition:.2s; cursor:pointer; }
+  label.sw span::before { content:""; position:absolute; left:3px; top:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s; }
+  label.sw input:checked + span { background:var(--accent); } label.sw input:checked + span::before { transform:translateX(18px); }
+  .btns { display:flex; gap:10px; margin-top:6px; position:sticky; bottom:0; padding:12px 0 6px; background:var(--bg); }
+  button.p, button.s { flex:1; padding:11px; border-radius:11px; border:0; font:inherit; font-weight:700; cursor:pointer; }
+  button.p { background:linear-gradient(135deg,#38b6ff,#1d7be0); color:#fff; }
+  button.s { background:var(--card); color:var(--ink); border:1px solid var(--line); }
+  #status { text-align:center; color:var(--mute); margin-top:10px; min-height:18px; }
+</style>
+</head>
+<body>
+  <h1>Water Buddy</h1>
+  <div class="sub">Works over every app and screen. <span id="today"></span></div>
+
+  <div class="card">
+    <div class="row"><div>Remind me every<small>Minutes between reminders</small></div>
+      <div class="chips" id="chips"></div></div>
+    <div class="row"><div>Custom interval<small>1 - 480 minutes</small></div><input type="number" id="interval" min="1" max="480"></div>
+    <div class="row"><div>Snooze ("Remind me later")<small>Minutes</small></div><input type="number" id="snooze" min="1" max="120"></div>
+    <div class="row"><div>Auto-hide if ignored<small>Seconds, then it snoozes</small></div><input type="number" id="auto" min="10" max="600"></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><div>Active hours<small>No reminders outside this window</small></div>
+      <div class="hours"><input type="number" id="hs" min="0" max="23"> to <input type="number" id="he" min="1" max="24"></div></div>
+    <div class="row"><div>Daily goal<small>Glasses per day</small></div><input type="number" id="goal" min="1" max="30"></div>
+    <div class="row"><div>Your name</div><input type="text" id="name" maxlength="30"></div>
+    <div class="row"><div>Character image<small>Your Memoji / any transparent PNG</small></div>
+      <div class="chips"><button class="chip" id="pick">Choose...</button><button class="chip" id="reset">Default</button></div></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><div>Flying plane banner</div><label class="sw"><input type="checkbox" id="plane"><span></span></label></div>
+    <div class="row"><div>Sound</div><label class="sw"><input type="checkbox" id="sound"><span></span></label></div>
+    <div class="row"><div>Launch at login</div><label class="sw"><input type="checkbox" id="login"><span></span></label></div>
+  </div>
+
+  <div class="btns"><button class="s" id="test">Preview</button><button class="p" id="save">Save</button></div>
+  <div id="status"></div>
+  <script src="settings.js"></script>
+</body>
+</html>

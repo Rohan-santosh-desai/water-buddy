@@ -1,0 +1,80 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: transparent;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; user-select: none; }
+.hidden { visibility: hidden; }
+
+#fx { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+
+/* ---------- plane ---------- */
+#plane {
+  position: fixed; top: 14vh; left: 0; z-index: 3;
+  display: flex; align-items: center; pointer-events: none;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.25));
+}
+#plane.fly { visibility: visible; animation: fly 4.2s cubic-bezier(.4,.1,.5,1) forwards; }
+@keyframes fly {
+  0%   { transform: translate(-110%, 40px) rotate(-6deg); }
+  30%  { transform: translate(30vw, -10px) rotate(2deg); }
+  60%  { transform: translate(62vw, 24px) rotate(-3deg); }
+  100% { transform: translate(115vw, -30px) rotate(-5deg); }
+}
+#banner {
+  position: relative; margin-right: -6px; padding: 8px 22px 8px 16px;
+  background: #fff; color: #1d4f91; font-weight: 700; font-size: 20px; white-space: nowrap;
+  border-radius: 6px 2px 2px 6px; border: 2px solid #9db4e6;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%);
+  padding-left: 28px;
+}
+
+/* ---------- character ---------- */
+#stage { position: fixed; right: 56px; bottom: 28px; z-index: 4; display: flex; flex-direction: column; align-items: center; width: 320px; }
+#stage.show { visibility: visible; }
+
+/* walk in from the right edge, stop, later walk back out */
+#buddyWrap { transform: translateX(560px); }
+#buddyWrap.walkIn  { animation: walkIn 2.3s cubic-bezier(.25,.55,.35,1) forwards; }
+#buddyWrap.walkOut { animation: walkOut 2.1s cubic-bezier(.55,0,.75,.6) forwards; }
+@keyframes walkIn  { from { transform: translateX(560px); } to { transform: translateX(0); } }
+@keyframes walkOut { from { transform: translateX(0); }     to { transform: translateX(560px); } }
+#bubble.fade, #buttons.fade { animation: none !important; opacity: 0 !important; transition: opacity .2s; }
+
+#buddyWrap { display: flex; justify-content: center; }
+#buddy, #buddyImg { filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); }
+#buddyImg { max-height: 400px; max-width: 280px; width: auto; height: auto; }
+#buddy #head { transform-origin: 106px 140px; animation: bob 2.6s ease-in-out infinite; }
+#buddy #armL { transform-origin: 70px 166px; animation: wave 1.4s ease-in-out infinite; }
+#buddy #eyes { transform-origin: 107px 99px; animation: blink 4s infinite; }
+@keyframes bob   { 0%,100% { transform: rotate(-1.5deg) translateY(0); } 50% { transform: rotate(1.5deg) translateY(-2px); } }
+@keyframes wave  { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(9deg); } }
+@keyframes blink { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+
+/* ---------- message card ---------- */
+#bubble {
+  position: relative; margin-bottom: 14px; padding: 14px 20px; text-align: center; width: 100%;
+  background: #fff; border-radius: 18px; color: #1b1f2a;
+  box-shadow: 0 14px 36px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.05);
+  opacity: 0; transform: scale(.7); transform-origin: 50% 100%;
+}
+#bubble.pop { animation: pop .4s cubic-bezier(.2,1.5,.4,1) forwards; }
+#bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -11px; margin-left: -12px; width: 0; height: 0;
+  border-top: 12px solid #fff; border-left: 12px solid transparent; border-right: 12px solid transparent;
+}
+@keyframes pop { to { opacity: 1; transform: scale(1); } }
+#msg { font-size: 20px; font-weight: 800; line-height: 1.25; letter-spacing: -.2px; }
+#msg b { background: linear-gradient(90deg, #ff8a00, #ff3d6e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#sub { margin-top: 3px; font-size: 14px; font-weight: 600; color: #4b9be0; }
+
+/* ---------- buttons ---------- */
+#buttons {
+  display: flex; width: 100%; margin-top: 12px; border-radius: 14px; overflow: hidden;
+  background: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.35); opacity: 0;
+}
+#buttons.show { animation: pop .4s .1s cubic-bezier(.2,1.5,.4,1) forwards; }
+#buttons button {
+  flex: 1; padding: 12px 10px; border: 0; background: transparent; color: #1b1f2a;
+  font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; transition: background .12s;
+}
+#buttons button + button { border-left: 1px solid #e6e9ef; color: #5a6475; }
+#yes:hover { background: #e8f4ff; } #later:hover { background: #f1f3f7; }
+#buttons button:active { background: #dde9f7; }

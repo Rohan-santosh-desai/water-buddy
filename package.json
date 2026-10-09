@@ -1,0 +1,22 @@
+{
+  "name": "water-buddy",
+  "version": "1.0.0",
+  "description": "A tiny desktop companion that reminds you to drink water",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --linux --mac"
+  },
+  "build": {
+    "appId": "dev.rohan.waterbuddy",
+    "productName": "Water Buddy",
+    "files": ["src/**", "assets/**"],
+    "win": { "target": "nsis", "icon": "assets/icon-256.png" },
+    "linux": { "target": "AppImage", "icon": "assets/icon-256.png" }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
